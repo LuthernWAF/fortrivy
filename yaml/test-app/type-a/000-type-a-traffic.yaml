@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: type-a-service
+  namespace: lizzoslunch
+spec:
+  selector:
+    app: type-a
+  ports:
+    - name: http
+      port: 80             
+      targetPort: 5000      
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: type-a
+  namespace: lizzoslunch
+spec:
+  host: type-a-service.lizzoslunch.svc.cluster.local #
+  subsets:
+    - name: stable
+      labels:
+        app: type-a
+    - name: canary
+      labels:
+        app: type-a
+        version: v1

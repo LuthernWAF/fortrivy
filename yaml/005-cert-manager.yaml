@@ -1,0 +1,16 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: api-berongcp-net
+  namespace: istio-system
+spec:
+  secretName: api-berongcp-net-crt
+  dnsNames:
+    - berongcp.net
+  issuerRef:
+    name: production-cluster-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+
+#Will automatically create the secret for the certificates.
+#CRD which is part of the istio suite.

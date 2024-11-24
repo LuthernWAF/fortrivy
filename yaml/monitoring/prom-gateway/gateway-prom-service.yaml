@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-prom
+  namespace: istio-system
+  labels:
+    ingress: global
+spec:
+  ports:
+    - name: metrics
+      port: 15090
+  selector:
+    ingress: global
