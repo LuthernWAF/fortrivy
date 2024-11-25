@@ -1,0 +1,157 @@
+#>>>>>------------------GATEWAY-CONFIGURATION---------------------------------- 
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: lunar-gateway
+  namespace: istio-system
+spec:
+  selector:
+    ingress: global # Ties the gateway to the operator in istio-system
+  servers:
+#HTTP-PORT-80
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"  # Update to domain after creating an A-record berongcp.net or use * 
+#HTTPS-PORT-443
+#  - port:
+#      number: 443
+#      name: https
+#      protocol: HTTPS
+#    hosts:
+#    - "berongcp.net"  # Update to domain after creating an A-record berongcp.net
+#    tls:
+#      mode: SIMPLE
+#      credentialName: api-berongcp-net-crt # Secret created by the cert-manager
+--- 
+#>>> GATEWAY-AUTOSCALING-FOR-HIGH-AVAILABILITY
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: global-ingress-hpa
+  namespace: istio-system
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: global-ingress  # Match the Deployment created by IstioOperator
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
+--- 
+#>>> POD-DISRUPTION-BUDGET
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: global-ingress-pdb
+  namespace: istio-system
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      ingress: global  # Match the label in the IstioOperator configuration
+---
+#>>>>>-------------VIRTUAL-SERVICE/ROUTING-CONFIGURATION----------------------- 
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: my-app-virtualservice
+  namespace: lizzoslunch #
+spec:
+# >>> First update this field with the generated gateway IP. Then Update the host after creating an A-record berongcp.net
+  hosts:
+  - "FILL-IP-OR-DOMAIN-HERE" # LoadBalancer IP or berongcp.net 
+  gateways:
+  - istio-system/lunar-gateway
+#>>> ROUTE-1-type-a-stable-subset
+  http:
+    - match: 
+        - uri:
+            prefix: /redhead 
+      rewrite:  
+        uri: "/"       
+      route:
+        - destination:
+            host: type-a-service.lizzoslunch.svc.cluster.local #
+            subset: stable #
+#>>> ROUTE-2-type-b-stable-subset
+    - match: 
+        - uri:
+            prefix: /milk
+      rewrite:  
+        uri: "/"         
+      route:
+        - destination:
+            host: type-b-service.lizzoslunch.svc.cluster.local #
+            subset: stable #
+#>>> ROUTE-3-type-a-canary-subset
+    - match: 
+        - uri:
+            prefix: /italia
+      rewrite:  
+        uri: "/"         
+      route:
+        - destination:
+            host: type-a-service.lizzoslunch.svc.cluster.local #
+            subset: canary #
+#>>> ROUTE-0-DEFAULT-URL-MUST-BE-PLACED-LAST            
+    - route:  
+        - destination:
+            host: type-a-service.lizzoslunch.svc.cluster.local #
+            subset: stable #
+          weight: 25
+        - destination:
+            host: type-a-service.lizzoslunch.svc.cluster.local #
+            subset: canary #
+          weight: 25
+        - destination:
+            host: type-b-service.lizzoslunch.svc.cluster.local #
+            subset: stable #
+          weight: 50
+---
+#>>>>>----------------------------IN-SUMMARY------------------------------------------>
+# Multiple Services: Each application connected to the mesh can have it's own route tied to a service
+# Versioning with One Service: Use DestinationRule and subsets to manage traffic to different applications within the same service.
+# Configuration Flexibility: VirtualService handles routing to different services directly, while DestinationRule refines backend distribution within a single service if needed.
+#>>>------------------------------------------------------------------------------------->>>
+
+#apiVersion: networking.istio.io/v1beta1
+#kind: VirtualService
+#metadata:
+#  name: my-app-virtualservice
+#  namespace: lizzoslunch
+#spec:
+#  hosts:
+#  - "*"  # Matches any host or IP
+#  gateways:
+#  - istio-system/lunar-gateway
+#  http:
+#  - route:
+#    - destination:
+#        host: my-app-service.lizzoslunch.svc.cluster.local
+#        port:
+#          number: 5000
+# >>> DESTINATION-RULE-EXAMPLE
+# apiVersion: networking.istio.io/v1beta1
+# kind: DestinationRule
+# metadata:
+#   name: type-a
+#   namespace: lizzoslunch
+# spec:
+#   host: type-a-service.lizzoslunch.svc.cluster.local #
+#   subsets:
+#     - name: stable
+#       labels:
+#         app: type-a
+#     - name: canary
+#       labels:
+#         app: type-a
+#         version: v1

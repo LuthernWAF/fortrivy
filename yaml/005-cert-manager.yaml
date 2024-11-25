@@ -13,4 +13,3 @@ spec:
     group: cert-manager.io
 
 #Will automatically create the secret for the certificates.
-#CRD which is part of the istio suite.
