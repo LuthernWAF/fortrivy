@@ -1,6 +1,5 @@
 
 # Beron's Istio Lab & Configuration
-
 ---
 This Repository contains the most up to date version of my Istio project Lab.
 
