@@ -67,7 +67,6 @@ If the operator has a healthy and running status we can continue to the next sec
 
 ---
 ## Section 2 *Webserver deployments*
----
 
 Now let us create the Istio managed namespace to host our demo web applications. 
 
@@ -130,7 +129,6 @@ Once all of the pods in the `lizzoslunch` namespace are confirmed as healthy we 
 
 ---
 ## Section 3 *Gateway installation and settings*
----
 
 This section can get confusing near the end but stay with me!
 
@@ -326,7 +324,6 @@ Then `kubectl apply -f 003-gateway-settings.yaml` and you should have access to 
 
 ---
 ## Section 4 *Monitoring with Prometheus, Grafana, and Kiali*
----
 
 Now that you made it through the networking section and have an idea of how istio works, we ought to take advantage of it's features and begin monitoring our service mesh. 
 This is where the labels and ports I pointed out on our stateful set will come into play. 
@@ -412,7 +409,6 @@ The next section will Require a GCP Registered domain to use
 
 ---
 ## Section 5 *HTTPS using the Istio Gateway*
----
 
 In order to enable HTTPS in my configuration we only have to make a few adjustments to our virtual service and employ a few new tools. Will will be making use of the cert-manager operator to generate certificates for an "A" record tied to our domain. The certificates will then be stored in the kubectl secrets manager and then used by our gateway to terminate incoming https encryption. 
 *In my example I'll be using berongcp.net*
