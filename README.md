@@ -35,7 +35,7 @@ However if you desire to enable HTTPS you will need a google registered domain t
 
 ---
 ## Section 1 *Operator & Control Plane Namespace*
----
+
 First we create a namespace for our Istio control-plane and tools to live in.
 `kubectl create namespace istio-system`
 
