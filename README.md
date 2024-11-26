@@ -1,6 +1,6 @@
 
 # Beron's Istio Lab & Configuration
----
+
 This Repository contains the most up to date version of my Istio project Lab.
 
 The purpose of this project was to create a repeatable and flexible environment to test and familiarize myself with the architecture and most prominent features of the Istio operator. I found in my studies and experiments, that though at many points it's configuration can be rather tricky, the advantages of running Istio in production outweigh the mental labor of it's initial configuration.
