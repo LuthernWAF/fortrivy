@@ -7,7 +7,7 @@ This Repository contains the most up to date version of my Istio project Lab.
 The purpose of this project was to create a repeatable and flexible environment to test and familiarize myself with the architecture and most prominent features of the Istio operator. I found in my studies and experiments, that though at many points it's configuration can be rather tricky, the advantages of running Istio in production outweigh the mental labor of it's initial configuration.
 Due to the way its custom resources reference other objects it's imperative that you maintain a consistent understandable naming and labeling convention as these will be utilized repetitiously throughout configuration and modification.  Due to it's complex nature, I think it would be best to give a brief explanation of what Istio is and what it does, and then devote the rest of this document to the deployment steps of this repo's content.
 
-##### What is Istio?
+## What is Istio?
 
 Istio is an open-source **service mesh** that simplifies how microservices in a Kubernetes cluster communicate securely and efficiently. It manages:
 
@@ -25,17 +25,17 @@ All traffic managed by Istio flows through the sidecar proxies, creating a singl
 As you’ll see later in this document, Istio has many more fascinating and unique capabilities to explore.
 
 ---
-##### Lab Deployment
+#### Lab Deployment
 
 As mentioned earlier, the best way to understand how Istio works is by deploying it and learning the significance of each step. In this walkthrough, I’ll provide a description of the key characteristics for each YAML file we deploy. 
 
-###### *Prerequisite*  
+##### *Prerequisite*  
 In order to do the minimum specification for HTTP. You do not need anything besides a Kubernetes cluster to begin working with this. 
 
 However if you desire to enable HTTPS you will need a google registered domain to follow the last section of this guide. 
 
 ---
-##### Section 1 *Operator & Control Plane Namespace
+## Section 1 *Operator & Control Plane Namespace*
 ---
 First we create a namespace for our Istio control-plane and tools to live in.
 `kubectl create namespace istio-system`
@@ -67,7 +67,7 @@ Get the pods from the istio-system namespace to confirm all is well and to check
 If the operator has a healthy and running status we can continue to the next section.
 
 ---
-##### Section 2 *Webserver deployments*
+## Section 2 *Webserver deployments*
 ---
 
 Now let us create the Istio managed namespace to host our demo web applications. 
@@ -130,7 +130,7 @@ Once all of the pods in the `lizzoslunch` namespace are confirmed as healthy we 
 
 
 ---
-##### Section 3 *Gateway installation and settings*
+## Section 3 *Gateway installation and settings*
 ---
 
 This section can get confusing near the end but stay with me!
@@ -326,7 +326,7 @@ To wrap up this section make sure to update the quotes underneath `host` with yo
 Then `kubectl apply -f 003-gateway-settings.yaml` and you should have access to all applications via the external IP. Refresh to see the load balancer distribute traffic.
 
 ---
-##### Section 4 *Monitoring with Prometheus, Grafana, and Kiali*
+## Section 4 *Monitoring with Prometheus, Grafana, and Kiali*
 ---
 
 Now that you made it through the networking section and have an idea of how istio works, we ought to take advantage of it's features and begin monitoring our service mesh. 
@@ -412,7 +412,7 @@ And It also allows you to to rewind and pause traffic activity over time, So you
 The next section will Require a GCP Registered domain to use
 
 ---
-##### Section 5 *HTTPS using the Istio Gateway*
+## Section 5 *HTTPS using the Istio Gateway*
 ---
 
 In order to enable HTTPS in my configuration we only have to make a few adjustments to our virtual service and employ a few new tools. Will will be making use of the cert-manager operator to generate certificates for an "A" record tied to our domain. The certificates will then be stored in the kubectl secrets manager and then used by our gateway to terminate incoming https encryption. 
