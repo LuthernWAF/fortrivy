@@ -411,7 +411,7 @@ The next section will Require a GCP Registered domain to use
 ---
 ## Section 5 *HTTPS using the Istio Gateway*
 
-In order to enable HTTPS in my configuration we only have to make a few adjustments to our virtual service and employ a few new tools. Will will be making use of the cert-manager operator to generate certificates for an "A" record tied to our domain. The certificates will then be stored in the kubectl secrets manager and then used by our gateway to terminate incoming https encryption. 
+In order to enable HTTPS in my configuration we only have to make a few adjustments to our virtual service and employ a few new tools. We will be making use of the cert-manager operator to generate certificates for an "A" record tied to our domain. The certificates will then be stored in the kubectl secrets manager and then used by our gateway to terminate incoming https encryption. 
 *In my example I'll be using berongcp.net*
 
 First Create an `A-Record` for your domain and tie it to the External IP address of your gateway. 
