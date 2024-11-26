@@ -58,6 +58,7 @@ Now change directories into the `yaml` folder.
 
 And we will install the operator/control plane using the 001-yaml template.
 `istioctl install -y -f 001-istio-operator.yaml -n istio-system --revision prod`
+
 *Notice how we tag the operator/control-plane with the* `revision prod`
 
 Get the pods from the istio-system namespace to confirm all is well and to check your work so far:
