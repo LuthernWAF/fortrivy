@@ -136,7 +136,7 @@ This section can get confusing near the end but stay with me!
 Change directories back to the top of the `yaml` folder. And install the global ingress gateway:
 `istioctl install -y -f 002-global-ingress-gateway.yaml --revision prod`
 
-This will create an external facing gateway within the `istio-system `with a public IP address
+This will create an external facing gateway within the `istio-system` with a public IP address.
 After creation view the available services to get our ip address and save this for the next steps.
 `kubectl get svc -n istio-system`
 
