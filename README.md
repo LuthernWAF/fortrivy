@@ -105,7 +105,7 @@ spec:
 ```
 
 And Here we specify ports for our application listener, and an another called `http-envoy-prom`
-- The additional port is uses by the istio sidecars to expose their metrics,  which Prometheus also scrapes by default—a beautiful integration. By exposing this port within our containers, we enable Prometheus to monitor traffic flowing through the service mesh.
+- The additional port is used by the istio sidecars to expose their metrics,  which Prometheus also scrapes by default—a beautiful integration. By exposing this port within our containers, we enable Prometheus to monitor traffic flowing through the service mesh.
 ```python
      #>>> PORTS 
         ports:
