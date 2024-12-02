@@ -1,3 +1,8 @@
+## Latest Changes
+
+1. I've updated this config to support mtls encryption across the service mesh whilst allowing promethues to scrape from outside the mesh.
+
+2. I added a service monitor to support kubestate metrics.
 
 # Beron's Istio Lab & Configuration
 
