@@ -1,0 +1,11 @@
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: prometheus-scrape
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      prometheus: main
+  mtls:
+    mode: PERMISSIVE

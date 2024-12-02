@@ -1,0 +1,13 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: prometheus-id-verfication
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      prometheus: main
+  rules:
+    - from:
+        - source:
+            principals: ["cluster.local/ns/monitoring/sa/prometheus"]
